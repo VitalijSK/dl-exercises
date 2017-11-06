@@ -150,16 +150,16 @@ class Matrix(object):
         """ Матричное умножение """
         
         matn, matm = mat.getRank()
-        matr = Matrix(self.n, self.m)
+        matr = Matrix(self.n, mat.m)
         # для перемножения матриц число столбцов одной 
         # должно равняться числу строк в другой
         if (self.m != matn):
             raise MatrixError("Matrices cannot be multipled!")
         for i in range(self.n):
-            for j in range(self.m):
+            for j in range(mat.m):
                 matr[i][j] = 0
-                for k in range(2):
-                    matr[i][j] += mat[i][k]*self.array[k][j]
+                for k in range(mat.n):
+                    matr[i][j] += self[i][k]*mat.array[k][j]
                
         '''
         Здесь написать код, выполняющий 
@@ -206,12 +206,13 @@ class Matrix(object):
 
 
 if __name__ == "__main__":
-    a = Matrix.fromList([[1,2], [3, 4]])
+    a = Matrix.fromList([[1,4], [2, 5], [3 , 6]])
+    b = Matrix.fromList([[7,8,9], [10 , 11, 12]])
     print(a)
     print(a*2)
     print('Identity:')
     print(Matrix.makeId(3))
     print(a)
-    print(Matrix.dot(a,a))
+    print(Matrix.dot(a, b))
     pass
 

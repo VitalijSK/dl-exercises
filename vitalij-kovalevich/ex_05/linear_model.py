@@ -1,13 +1,4 @@
 import numpy as np
-import math
-
-
-def sigmoid(z):
-    '''
-    TODO (new) Допишите функцию сигмоида 
-    '''  
-    return 
-
 
 class LogisticRegression():
     '''Логистическая регрессия
@@ -78,11 +69,11 @@ class LogisticRegression():
         if not hasattr(self, 'W'):
             self.__weight_init(x.shape[1])
         def sigmoid(x):
-            return 1 / (1 + math.exp(-x))
+            return 1 / (1 + np.exp(-x))
         # TODO нужно исправить return, чтобы он возвращал результат 
         # матричного перемножения x и параметров модели
         # TODO (new) не забудьте применить sigmoid к результату 
-        return np.array(list(map(sigmoid, self.W.dot(x.T))))
+        return sigmoid(self.W.dot(x.T))
 
     
     def cost(self, X, y):
@@ -93,9 +84,8 @@ class LogisticRegression():
         Это самая важная часть задания, смотрите внимательно на формулу
         и проверяйте какой размерности получается результат 
         '''
-
-        return (-y.dot(list(map(math.log, self.predict(X))))-(1-y).dot(list(map(math.log, 1 - self.predict(X)))))/len(X)
-
+        return (-y.dot(np.log(self.predict(X)))-(1-y).dot(np.log(1 - self.predict(X))))/len(X)
+                   
     def __gradient(self, x, y):
         ''' TODO Метод, вычисляющий градиенты на каждом шагу
         grad = 1/m*(sum(h(x)-y)*x)
@@ -144,12 +134,4 @@ class LogisticRegression():
                 prev_cost = curr_cost
             i_epoch += 1
 
-
-if __name__ == '__main__':
-    X = np.array([[2.7810836, 2.550537003],[1.465489372, 2.362125076],[3.396561688, 4.400293529],[1.38807019, 1.850220317],[3.06407232, 3.005305973],[7.627531214, 2.759262235],[5.332441248,2.088626775],[6.922596716,1.77106367],[8.675418651,-0.2420686549],[7.673756466,3.508563011]])
-    y = np.array([0,0,0,0,0,1,1,1,1,1])
-    clf = LogisticRegression()
-    clf.fit(X, y)
-    print(clf.cost(X, y))
-    # После обучения ожидается ошибка 0.0349
 
